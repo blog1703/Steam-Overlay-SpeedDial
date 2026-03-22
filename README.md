@@ -48,7 +48,7 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
 
 ### Вот так будет выглядеть Домашняя страница
 
-![Домашняя страница в браузере стим](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/dashboard1.jpg)
+![Домашняя страница в браузере стим](https://raw.githubusercontent.com/blog1703/Steam-Overlay-SpeedDial/refs/heads/main/images/view_speedial.gif)
 
 *Домашняя страница в браузере стим*
 
