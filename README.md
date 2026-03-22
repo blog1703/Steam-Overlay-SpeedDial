@@ -46,7 +46,7 @@ Steam Overlay блокирует `file://`, но **не блокирует** `fi
 
 ### Вот так будет выглядеть Домашняя страница
 
-![Домашняя страница в браузере стим](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/dashboard.jpg)
+![Домашняя страница в браузере стим](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/dashboard1.jpg)
 
 *Домашняя страница в браузере стим*
 
