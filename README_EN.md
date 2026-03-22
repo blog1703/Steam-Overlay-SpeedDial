@@ -1,6 +1,6 @@
 **Language:** [Russian](README.md) | [English](README_EN.md)
 
-# Steam-Overlay-Dashboard
+# Steam-Overlay-SpeedDial
 Custom Start Page for Steam Overlay Browser | Features site tiles, radio with global controls, Google search, weather, Telegram, Discord, YouTube Music, Yandex Music, VK. Supports bookmark import/export and RU/EN languages.
 
 ## 🛠️ Installation
