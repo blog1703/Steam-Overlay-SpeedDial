@@ -52,30 +52,30 @@ Steam Overlay blocks `file:///`, but **does not block** `file:/`.
 
 ---
 
-## 🎨 Кастомизация
+## 🎨 Customization
 
-Файл `dashboard.html` можно редактировать как угодно:
+The file `dashboard.html` can be edited as you wish:
 
-- ➕ Добавлять свои сайты в плитки
-- 🎵 Менять радиостанции
-- 🎨 Изменять цвета, шрифты, анимации
-- 🌐 Добавлять новые иконки сервисов
-- Виджет погоды в данном ввиде получен на сайте https://elfsight.com/ после регистрации
-- заменить ID в коде на свой в строчке тут
+- ➕ Add your websites to tiles
+- 🎵 Change radio stations
+- 🎨 Change colors, fonts, animations
+- 🌐  Add new service icons
+- The weather widget in this form was obtained from the website https://elfsight.com/ after registration
+- Replace the ID in the code with your own in the line here
 
 ![ID Widget](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/id_widget.png)
 
-*ID Widget сменить на свой после регистрации*
+*Change the ID Widget to your own after registration*
 
-- В целом можно поставить любой виджет погоды не обязательно с этого сайта
+- In general, you can install any weather widget, not necessarily from this site.
 
-Всё находится внутри одного файла — изменять его очень просто, можно с помощью Chat GPT, DeepSeek.
+Everything is located inside one file - it is very easy to change it, you can use Chat GPT, DeepSeek.
 
-## ➕ Добавление новых иконок быстрых ссылок
+## ➕ Adding new quick link icons
 
-В панели иконок (Telegram, Discord, YouTube Music, Yandex Music, VK) можно легко добавить любой сервис.
+You can easily add any service to the icon bar (Telegram, Discord, YouTube Music, Yandex Music, VK).
 
-### Шаблон для добавления
+### Template to add
 
 ```html
 <a href="https://link-to-service" target="_blank" class="pure-icon" title="Name">
@@ -84,9 +84,9 @@ Steam Overlay blocks `file:///`, but **does not block** `file:/`.
 ```
 
 ---
-## 📄 Полный код проекта
+## 📄 Full project code
 <details>
-  <summary>📄 Нажмите, чтобы показать код dashboard.html</summary>
+  <summary>📄 Click to show dashboard.html</summary>
   
   
   ```html
@@ -1342,10 +1342,10 @@ Steam Overlay blocks `file:///`, but **does not block** `file:/`.
 ```
 </details>
 
-## 💡 Авторская заметка
+## Author's note
 
-Файл можно настраивать под себя: менять иконки, добавлять свои виджеты, менять цветовую схему.  
-Если вы захотите поделиться своим вариантом или улучшить проект — добро пожаловать в открытый исходный код.
+The file is customizable: change icons, add your own widgets, and change the color scheme.
+If you'd like to share your own version or improve the project, you're welcome to open source it.
 
-**Приятного использования!** 🎮
+**Enjoy using it!** 🎮
 
