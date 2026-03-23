@@ -47,7 +47,29 @@
             margin: 0 auto;
         }
         
-        /* Типографика */
+        /* Language switcher */
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+        
+        .lang-switch a {
+            background: #f1f5f9;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #2563eb;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .lang-switch a:hover {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* Typography */
         h1 {
             font-size: 2rem;
             font-weight: 700;
@@ -85,7 +107,6 @@
             text-decoration: underline;
         }
         
-        /* Списки */
         ul, ol {
             margin: 1rem 0 1rem 1.5rem;
             color: #334155;
@@ -95,7 +116,6 @@
             margin: 0.5rem 0;
         }
         
-        /* Блоки кода */
         code {
             background: #f1f5f9;
             padding: 0.2rem 0.4rem;
@@ -121,7 +141,6 @@
             color: #0f172a;
         }
         
-        /* Цитаты */
         blockquote {
             background: #f8fafc;
             border-left: 4px solid #2563eb;
@@ -131,7 +150,6 @@
             color: #334155;
         }
         
-        /* Картинки */
         img {
             max-width: 100%;
             height: auto;
@@ -140,7 +158,6 @@
             border: 1px solid #e2e8f0;
         }
         
-        /* Кнопка */
         .github-btn {
             display: inline-flex;
             align-items: center;
@@ -160,35 +177,6 @@
             transform: scale(1.02);
         }
         
-        /* Сетка фич */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .feature-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 1rem;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        
-        .feature-card:hover {
-            border-color: #2563eb;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        
-        .feature-card span {
-            font-size: 1.5rem;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        
-        /* Подвал */
         .footer {
             margin-top: 3rem;
             padding-top: 2rem;
@@ -222,6 +210,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="lang-switch">
+            <a href="/en.html">🇬🇧 English version</a>
+        </div>
+        
         <h1>🎮 Steam Speed Dial</h1>
         <p>Кастомная стартовая страница для браузера Steam Overlay | Custom start page for Steam Overlay browser</p>
         <p>Плитки сайтов, радио с глобальным управлением, поиск Google, погода, Telegram, Discord, YouTube Music, Yandex Music, VK. Экспорт/импорт закладок, RU/EN.</p>
