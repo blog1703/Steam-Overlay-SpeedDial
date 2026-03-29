@@ -32,7 +32,7 @@ Navigate to the path: C:\Program Files (x86)\Steam\userdata\XXXXXXXX\config\loca
 
 Locate the code line containing "GameOverlayHomePage" and replace `"https://www.google.com/"` with `"file:/C:/Users/USERNAME/Documents/SteamOverlayDashboard/dashboard.html"`
 
-![code line where you need to make the replacement](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/screenshot.jpg)
+![code line where you need to make the replacement](https://raw.githubusercontent.com/blog1703/Steam-Overlay-SpeedDial/refs/heads/main/images/final.gif)
 
 *code line where you need to make the replacement*
 
