@@ -3,7 +3,7 @@
 # Steam-Overlay-SpeedDial
 Кастомная стартовая страница для браузера Steam Overlay | Custom start page for Steam Overlay browser  Плитки сайтов, радио с глобальным управлением, поиск Google, погода, Telegram, Discord, YouTube Music, Yandex Music, VK. Экспорт/импорт закладок, RU/EN
 
-## Демо сайт: https://steamhomepage.netlify.app/demo.html
+## Демо сайт: [https://steamhomepage.netlify.app/demo.html](тут что должно быть?)
 
 ## 🛠️ Установка
 
