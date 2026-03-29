@@ -62,14 +62,6 @@ The file `dashboard.html` can be edited as you wish:
 - 🎵 Change radio stations
 - 🎨 Change colors, fonts, animations
 - 🌐  Add new service icons
-- The weather widget in this form was obtained from the website https://elfsight.com/ after registration
-- Replace the ID in the code with your own in the line here
-
-![ID Widget](https://raw.githubusercontent.com/blog1703/Steam-Overlay-Dashboard/refs/heads/main/images/id_widget.png)
-
-*Change the ID Widget to your own after registration*
-
-- In general, you can install any weather widget, not necessarily from this site.
 
 Everything is located inside one file - it is very easy to change it, you can use Chat GPT, DeepSeek.
 
