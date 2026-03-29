@@ -89,9 +89,10 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
 <head>
     <meta charset="UTF-8">
     <title>Steam Overlay Dashboard</title>
-    <!-- Elfsight Weather Widget -->
-    <script src="https://apps.elfsight.com/p/platform.js" defer></script>
     <style>
+        /* ============================================ */
+        /* ========== 1. ГЛОБАЛЬНЫЕ СТИЛИ ========== */
+        /* ============================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -99,6 +100,7 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             min-height: 100vh;
             padding: 30px;
             color: #e0e0e0;
+            transition: background 0.3s ease;
         }
         .container { 
             max-width: 1400px; 
@@ -108,7 +110,103 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             min-height: calc(100vh - 60px);
         }
         
-        /* ========== ВЕРХНЯЯ ПАНЕЛЬ: поиск + погода ========== */
+        /* ============================================ */
+        /* ========== 2. ТЕМЫ ОФОРМЛЕНИЯ ========== */
+        /* ============================================ */
+        body[data-theme="default"] {
+            background: linear-gradient(135deg, #1e1f2c 0%, #13141f 100%);
+            color: #e0e0e0;
+        }
+        body[data-theme="default"] .current-station { color: #66c0f4; }
+        body[data-theme="default"] .search-btn { background: #66c0f4; color: #1a1a2e; }
+        body[data-theme="default"] .icon-circle { background: rgba(42, 71, 94, 0.6); }
+        body[data-theme="default"] .play-btn { background: #66c0f4; }
+        body[data-theme="default"] .volume-slider { accent-color: #66c0f4; }
+        body[data-theme="default"] .station-status { color: #66c0f4; }
+        
+        body[data-theme="minimalism"] {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+        body[data-theme="minimalism"] .current-station { color: #333; }
+        body[data-theme="minimalism"] .tile,
+        body[data-theme="minimalism"] .radio-card,
+        body[data-theme="minimalism"] .add-form,
+        body[data-theme="minimalism"] .top-bar {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            border-color: #ddd;
+            color: #333;
+        }
+        body[data-theme="minimalism"] .search-input {
+            color: #333;
+            background: rgba(0,0,0,0.05);
+        }
+        body[data-theme="minimalism"] .search-input::placeholder { color: #999; }
+        body[data-theme="minimalism"] .search-btn { background: #e0e0e0; color: #333; }
+        body[data-theme="minimalism"] .icon-circle { background: rgba(200,200,200,0.8); color: #333; }
+        body[data-theme="minimalism"] .theme-dot { border-color: #999; }
+        body[data-theme="minimalism"] .play-btn { background: #ff6b6b; }
+        body[data-theme="minimalism"] .volume-slider { accent-color: #ff6b6b; }
+        body[data-theme="minimalism"] .station-status { color: #ff6b6b; }
+        
+        body[data-theme="amber"] {
+            background: #2a1a0a;
+            color: #ffb347;
+        }
+        body[data-theme="amber"] .current-station { color: #ffb347; }
+        body[data-theme="amber"] .tile,
+        body[data-theme="amber"] .radio-card,
+        body[data-theme="amber"] .add-form,
+        body[data-theme="amber"] .top-bar {
+            background: rgba(50, 30, 10, 0.6);
+            border-color: #ffb347;
+            color: #ffb347;
+        }
+        body[data-theme="amber"] .search-input {
+            background: rgba(0,0,0,0.5);
+            border-color: #ffb347;
+            color: #ffb347;
+        }
+        body[data-theme="amber"] .search-input::placeholder { color: #ffb34780; }
+        body[data-theme="amber"] .search-btn { background: #3a2a1a; border: 1px solid #ffb347; color: #ffb347; }
+        body[data-theme="amber"] .icon-circle { background: rgba(50, 30, 10, 0.8); color: #ffb347; border-color: #ffb347; }
+        body[data-theme="amber"] .theme-dot { border-color: #ffb347; }
+        body[data-theme="amber"] .play-btn { background: #ffb347; }
+        body[data-theme="amber"] .play-btn .icon { fill: #2a1a0a; }
+        body[data-theme="amber"] .volume-slider { accent-color: #ffb347; }
+        body[data-theme="amber"] .station-status { color: #ffb347; }
+        
+        body[data-theme="pink"] {
+            background: linear-gradient(135deg, #4a2a3a 0%, #6a3a4a 100%);
+            color: #ffe0f0;
+        }
+        body[data-theme="pink"] .current-station { color: #ff99cc; }
+        body[data-theme="pink"] .tile,
+        body[data-theme="pink"] .radio-card,
+        body[data-theme="pink"] .add-form,
+        body[data-theme="pink"] .top-bar {
+            background: rgba(255, 200, 220, 0.2);
+            backdrop-filter: blur(4px);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffe0f0;
+        }
+        body[data-theme="pink"] .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffe0f0;
+        }
+        body[data-theme="pink"] .search-input::placeholder { color: #ffc0e0; }
+        body[data-theme="pink"] .search-btn { background: #ff99cc; color: #4a2a3a; border: 1px solid rgba(255, 255, 255, 0.5); }
+        body[data-theme="pink"] .icon-circle { background: rgba(255, 200, 220, 0.3); color: #ff99cc; border-color: rgba(255, 255, 255, 0.5); }
+        body[data-theme="pink"] .play-btn { background: #ff99cc; }
+        body[data-theme="pink"] .play-btn .icon { fill: #4a2a3a; }
+        body[data-theme="pink"] .volume-slider { accent-color: #ff99cc; }
+        body[data-theme="pink"] .station-status { color: #ff99cc; }
+        
+        /* ============================================ */
+        /* ========== 3. ВЕРХНЯЯ ПАНЕЛЬ ========== */
+        /* ============================================ */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -128,6 +226,30 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             min-width: 250px;
         }
         
+        .theme-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .theme-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .theme-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 6px rgba(102, 192, 244, 0.6);
+        }
+        .theme-dot.active {
+            border: 2px solid white;
+            transform: scale(1.15);
+            box-shadow: 0 0 8px rgba(255,215,0,0.8);
+        }
+        
         .search-form {
             display: flex;
             gap: 10px;
@@ -139,17 +261,11 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             transition: all 0.3s;
             margin-bottom: 12px;
         }
-        
         .search-form:focus-within {
             border-color: #66c0f4;
             box-shadow: 0 0 10px rgba(102, 192, 244, 0.3);
         }
-        
-        .search-icon {
-            font-size: 18px;
-            color: #66c0f4;
-        }
-        
+        .search-icon { font-size: 18px; color: #66c0f4; }
         .search-input {
             flex: 1;
             background: transparent;
@@ -159,11 +275,7 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             font-size: 16px;
             outline: none;
         }
-        
-        .search-input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-        
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
         .search-btn {
             background: #66c0f4;
             border: none;
@@ -174,33 +286,10 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             font-weight: bold;
             transition: all 0.2s;
         }
-        
         .search-btn:hover {
             background: #2a6f8f;
             color: white;
             transform: scale(1.02);
-        }
-        
-        .lang-switch {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: rgba(42, 71, 94, 0.6);
-            border: 1px solid rgba(102, 192, 244, 0.3);
-            border-radius: 30px;
-            padding: 5px 12px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s;
-            backdrop-filter: blur(4px);
-            z-index: 100;
-        }
-        
-        .lang-switch:hover {
-            background: #66c0f4;
-            color: #1a1a2e;
-            border-color: #66c0f4;
         }
         
         .icon-row {
@@ -210,7 +299,6 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             margin-top: 5px;
             flex-wrap: wrap;
         }
-        
         .pure-icon {
             display: inline-flex;
             align-items: center;
@@ -221,13 +309,12 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             transition: all 0.3s ease;
             background: none;
             border: none;
+            position: relative;
         }
-
         .pure-icon:hover {
             transform: scale(1.15);
             filter: drop-shadow(0 0 10px rgba(0, 136, 204, 0.5));
         }
-
         .pure-icon img {
             width: 100%;
             height: 100%;
@@ -235,20 +322,110 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             display: block;
         }
         
-        .weather-widget {
+        .add-icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(42, 71, 94, 0.3);
+            border: 2px dashed rgba(102, 192, 244, 0.6);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .add-icon-circle svg {
+            width: 48px;
+            height: 48px;
+            stroke: #66c0f4;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .add-icon-circle:hover {
+            background: rgba(102, 192, 244, 0.2);
+            border-color: #66c0f4;
+            transform: scale(1.05);
+        }
+        .add-icon-circle:hover svg { stroke: #ffffff; }
+        
+        .right-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .right-icons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .icon-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(42, 71, 94, 0.6);
+            border: 1px solid rgba(102, 192, 244, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .icon-circle:hover {
+            background: #66c0f4;
+            color: #1a1a2e;
+            transform: scale(1.05);
+        }
+        
+        .lang-switch-btn {
+            background: rgba(42, 71, 94, 0.6);
+            border: 1px solid rgba(102, 192, 244, 0.3);
+            border-radius: 30px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .lang-switch-btn:hover {
+            background: #66c0f4;
+            color: #1a1a2e;
+            border-color: #66c0f4;
+        }
+        
+        /* Статичный блок погоды */
+        .weather-static {
             min-width: 280px;
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
-            overflow: hidden;
+            padding: 12px 20px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+        }
+        .weather-static .temp {
+            font-size: 28px;
+            font-weight: bold;
+            color: #66c0f4;
+        }
+        .weather-static .city {
+            font-size: 12px;
+            opacity: 0.7;
         }
         
+        /* ============================================ */
+        /* ========== 4. ПЛИТКИ ========== */
+        /* ============================================ */
         .tiles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 170px));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
         .tile {
             background: rgba(42, 71, 94, 0.4);
             backdrop-filter: blur(10px);
@@ -260,27 +437,23 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             border: 1px solid rgba(102, 192, 244, 0.2);
             position: relative;
         }
-        
         .tile:hover {
             transform: translateY(-8px);
             background: rgba(102, 192, 244, 0.3);
             border-color: #66c0f4;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-        
         .tile img {
             width: 56px;
             height: 56px;
             border-radius: 12px;
             margin-bottom: 12px;
         }
-        
         .tile .title {
             font-size: 14px;
             font-weight: 500;
             margin-bottom: 5px;
         }
-        
         .delete-tile {
             position: absolute;
             top: 8px;
@@ -289,129 +462,136 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.2s;
-            color: #ff8a8a;
         }
-        
-        .tile:hover .delete-tile {
-            opacity: 1;
+        .delete-tile svg {
+            width: 14px;
+            height: 14px;
+            stroke: #ff8a8a;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
+        .tile:hover .delete-tile { opacity: 1; }
         
-        .add-form {
-            background: rgba(0,0,0,0.4);
+        .add-tile-btn {
+            background: rgba(42, 71, 94, 0.3);
+            border: 2px dashed rgba(102, 192, 244, 0.6);
             border-radius: 12px;
-            padding: 20px;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 140px;
         }
-        
-        .add-form input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
+        .add-tile-btn svg {
+            width: 48px;
+            height: 48px;
+            stroke: #66c0f4;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
-        
-        .add-form input:focus {
-            outline: none;
+        .add-tile-btn:hover {
+            background: rgba(102, 192, 244, 0.2);
             border-color: #66c0f4;
+            transform: translateY(-5px);
         }
+        .add-tile-btn:hover svg { stroke: #ffffff; }
         
-        .add-form button {
-            padding: 12px 30px;
-            background: #66c0f4;
-            border: none;
-            border-radius: 20px;
-            color: #1a1a2e;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .add-form button:hover {
-            background: #2a6f8f;
-            color: white;
-            transform: scale(1.02);
-            box-shadow: 0 0 10px rgba(102, 192, 244, 0.4);
-        }
-        
-        .radio-section {
-            margin-bottom: 20px;
-        }
-        
-        .radio-top-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
+        /* ============================================ */
+        /* ========== 5. РАДИО ПЛЕЕР ========== */
+        /* ============================================ */
+        .radio-section { margin-bottom: 20px; }
         .radio-player-box {
-            flex: 3;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 12px 20px;
-            border: 1px solid rgba(102, 192, 244, 0.2);
+            background: #000000;
+            border-radius: 60px;
+            padding: 12px 24px;
+            border: 2px solid #ffcc00;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .radio-player-box.playing {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255,204,0,0.4); border-color: #ffcc00; }
+            70% { box-shadow: 0 0 0 6px rgba(255,204,0,0); border-color: #ffdd44; }
+            100% { box-shadow: 0 0 0 0 rgba(255,204,0,0); border-color: #ffcc00; }
         }
         
-        .current-station {
-            font-size: 13px;
-            color: #66c0f4;
-            min-width: 180px;
-        }
-        
-        #radio-player {
-            flex: 2;
-            min-width: 200px;
-            height: 36px;
-            border-radius: 20px;
-        }
-        
-        #radio-player::-webkit-media-controls-panel {
-            background-color: #2a475e;
-        }
-        
-        .add-radio-btn {
-            background: #2a475e;
-            border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        
-        .add-radio-btn:hover {
+        .play-btn {
+            width: 48px;
+            height: 48px;
             background: #66c0f4;
-            transform: scale(1.02);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .play-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+        .play-btn .icon {
+            width: 24px;
+            height: 24px;
+            fill: #1a1a2e;
+        }
+        
+        .station-info {
+            flex: 1;
+            min-width: 150px;
+        }
+        .station-name {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+        .station-status {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffcc00;
+        }
+        
+        .volume-slider {
+            width: 120px;
+            cursor: pointer;
+            height: 4px;
+            border-radius: 5px;
+            flex-shrink: 0;
+            background: #333;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            background: #ffcc00;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            cursor: pointer;
         }
         
         .radio-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-top: 15px;
         }
-        
         .radio-card {
             background: rgba(42, 71, 94, 0.4);
             backdrop-filter: blur(10px);
@@ -425,18 +605,16 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             cursor: pointer;
             position: relative;
         }
-        
         .radio-card:hover {
             background: rgba(102, 192, 244, 0.2);
             border-color: #66c0f4;
+            transform: translateY(-2px);
         }
-        
         .radio-card.active {
             background: rgba(102, 192, 244, 0.3);
             border-color: #66c0f4;
             box-shadow: 0 0 10px rgba(102, 192, 244, 0.3);
         }
-        
         .radio-icon {
             width: 32px;
             height: 32px;
@@ -444,22 +622,13 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             align-items: center;
             justify-content: center;
         }
-        
         .radio-icon img {
             width: 28px;
             height: 28px;
             object-fit: contain;
         }
-        
-        .radio-info {
-            flex: 1;
-        }
-        
-        .radio-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
+        .radio-info { flex: 1; }
+        .radio-name { font-size: 14px; font-weight: 500; }
         .radio-url {
             font-size: 10px;
             opacity: 0.6;
@@ -468,7 +637,6 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
         .delete-radio {
             position: absolute;
             top: 8px;
@@ -477,156 +645,51 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.2s;
-            color: #ff8a8a;
         }
-        
-        .radio-card:hover .delete-radio {
-            opacity: 1;
+        .delete-radio svg {
+            width: 14px;
+            height: 14px;
+            stroke: #ff8a8a;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
+        .radio-card:hover .delete-radio { opacity: 1; }
         
-        .radio-add-form {
-            background: rgba(0,0,0,0.5);
+        .add-radio-card {
+            background: rgba(42, 71, 94, 0.3);
+            border: 2px dashed rgba(102, 192, 244, 0.6);
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: none;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .radio-add-form input {
-            flex: 1;
-            padding: 10px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-        }
-        
-        .radio-add-form button {
-            padding: 10px 20px;
-            background: #66c0f4;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .confirm-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
+            padding: 12px 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
-        }
-        
-        .confirm-dialog {
-            background: #1e1f2c;
-            border-radius: 20px;
-            padding: 25px 30px;
-            max-width: 350px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid #66c0f4;
-            box-shadow: 0 0 30px rgba(102,192,244,0.3);
-        }
-        
-        .confirm-dialog p {
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #e0e0e0;
-        }
-        
-        .confirm-dialog .station-name {
-            color: #66c0f4;
-            font-weight: bold;
-        }
-        
-        .confirm-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .confirm-btn {
-            padding: 8px 25px;
-            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            min-width: 140px;
         }
-        
-        .confirm-yes {
-            background: #8b3c3c;
-            border: none;
-            color: white;
+        .add-radio-card svg {
+            width: 32px;
+            height: 32px;
+            stroke: #66c0f4;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
-        
-        .confirm-yes:hover {
-            background: #ac4c4c;
-            transform: scale(1.02);
-        }
-        
-        .confirm-no {
-            background: #2a475e;
-            border: none;
-            color: white;
-        }
-        
-        .confirm-no:hover {
-            background: #66c0f4;
-            transform: scale(1.02);
-        }
-        
-        .controls-footer {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .control-btn {
-            background: #2a475e;
-            border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        
-        .control-btn:hover {
-            background: #66c0f4;
+        .add-radio-card:hover {
+            background: rgba(102, 192, 244, 0.2);
+            border-color: #66c0f4;
             transform: translateY(-2px);
         }
+        .add-radio-card:hover svg { stroke: #ffffff; }
         
-        .control-btn.danger {
-            background: #8b3c3c;
-        }
-        
-        .control-btn.danger:hover {
-            background: #ac4c4c;
-        }
-        
-        /* ========== ГЛОБАЛЬНАЯ ПЕРЕНОСИМАЯ КНОПКА РАДИО ========== */
+        /* ============================================ */
+        /* ========== 6. ПЕРЕНОСИМАЯ КНОПКА РАДИО ========== */
+        /* ============================================ */
         .radio-float-btn {
             position: fixed;
             z-index: 1000;
@@ -635,63 +698,259 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             height: 80px;
             background: none;
             border: none;
-            transition: all 0.1s ease;
+            transition: all 0.3s ease;
             user-select: none;
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.3));
+            animation: float 3s ease-in-out infinite;
         }
-        
-        .radio-float-btn:active {
-            cursor: grabbing;
+        .radio-float-btn:active { cursor: grabbing; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
         }
-
         .float-icon {
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: block;
-            transition: all 0.2s ease;
-            filter: drop-shadow(0 0 0px rgba(92, 124, 250, 0));
+            transition: all 0.3s ease;
             pointer-events: none;
+            filter: drop-shadow(0 0 8px currentColor);
         }
-
         .radio-float-btn:hover .float-icon {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 12px rgba(92, 124, 250, 0.6));
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 20px currentColor);
         }
-
-        .float-icon.pulsing {
-            animation: radioPulse 1.2s infinite ease-out;
-        }
-
+        .radio-float-btn:hover { animation: none; transform: translateY(-5px); }
+        .float-icon.pulsing { animation: radioPulse 5.0s infinite ease-in-out; }
         @keyframes radioPulse {
-            0% {
-                filter: drop-shadow(0 0 0px rgba(92, 124, 250, 0));
-                transform: scale(1);
-            }
-            50% {
-                filter: drop-shadow(0 0 16px rgba(92, 124, 250, 0.8));
-                transform: scale(1.05);
-            }
-            100% {
-                filter: drop-shadow(0 0 0px rgba(92, 124, 250, 0));
-                transform: scale(1);
-            }
+            0% { filter: drop-shadow(0 0 0px currentColor); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 16px currentColor); transform: scale(1.03); }
+            100% { filter: drop-shadow(0 0 0px currentColor); transform: scale(1); }
         }
         
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .tiles-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 140px)); gap: 12px; }
-            .tile img { width: 44px; height: 44px; }
-            .top-bar { flex-direction: column; }
-            .weather-widget { width: 100%; }
-            .pure-icon { width: 60px; height: 60px; }
-            .radio-float-btn { width: 60px; height: 60px; }
-            .radio-top-row { flex-direction: column; align-items: stretch; }
-            .radio-player-box { flex-direction: column; align-items: stretch; }
-            .current-station { text-align: center; }
-            .add-radio-btn { text-align: center; }
-            .lang-switch { top: 10px; right: 15px; font-size: 10px; }
+        body[data-theme="default"] .radio-float-btn { color: #66c0f4; }
+        body[data-theme="minimalism"] .radio-float-btn { color: #ff6b6b; }
+        body[data-theme="amber"] .radio-float-btn { color: #ffaa33; }
+        body[data-theme="pink"] .radio-float-btn { color: #ff99cc; }
+        
+        /* ============================================ */
+        /* ========== 7. НАПОМИНАНИЕ ========== */
+        /* ============================================ */
+        .export-reminder {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2a2a2a;
+            border-left: 4px solid #ffcc00;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1001;
+            animation: slideInReminder 0.3s ease;
+            backdrop-filter: blur(8px);
+            max-width: 350px;
+            font-size: 13px;
+        }
+        @keyframes slideInReminder {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .reminder-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .reminder-icon {
+            font-size: 20px;
+            color: #ffcc00;
+            flex-shrink: 0;
+        }
+        .reminder-text {
+            flex: 1;
+            line-height: 1.4;
+        }
+        .reminder-text strong {
+            color: #ffcc00;
+        }
+        .reminder-close {
+            cursor: pointer;
+            font-size: 16px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .reminder-close:hover {
+            opacity: 1;
+        }
+        .reminder-hint {
+            font-size: 11px;
+            margin-top: 6px;
+            opacity: 0.7;
         }
         
+        /* ============================================ */
+        /* ========== 8. МОДАЛЬНЫЕ ОКНА ========== */
+        /* ============================================ */
+        .settings-modal, .confirm-overlay, .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .settings-dialog, .confirm-dialog, .modal-dialog {
+            background: #1e1f2c;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #66c0f4;
+            box-shadow: 0 0 30px rgba(102,192,244,0.3);
+        }
+        body[data-theme="minimalism"] .settings-dialog,
+        body[data-theme="minimalism"] .confirm-dialog,
+        body[data-theme="minimalism"] .modal-dialog {
+            background: #e8eef2;
+            color: #1a1a2e;
+        }
+        body[data-theme="amber"] .settings-dialog,
+        body[data-theme="amber"] .confirm-dialog,
+        body[data-theme="amber"] .modal-dialog {
+            background: #3a2a1a;
+            border-color: #ffb347;
+        }
+        body[data-theme="pink"] .settings-dialog,
+        body[data-theme="pink"] .confirm-dialog,
+        body[data-theme="pink"] .modal-dialog {
+            background: #4a2a3a;
+            border-color: #ff99cc;
+        }
+        .settings-dialog h3, .confirm-dialog p, .modal-dialog h3 {
+            margin-bottom: 20px;
+            color: #66c0f4;
+        }
+        body[data-theme="amber"] .settings-dialog h3,
+        body[data-theme="amber"] .modal-dialog h3 { color: #ffb347; }
+        body[data-theme="pink"] .settings-dialog h3,
+        body[data-theme="pink"] .modal-dialog h3 { color: #ff99cc; }
+        .confirm-dialog .station-name { color: #66c0f4; font-weight: bold; }
+        
+        .settings-buttons, .modal-buttons, .confirm-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .modal-buttons, .confirm-buttons { flex-direction: row; justify-content: center; }
+        .settings-btn, .modal-buttons button, .confirm-btn {
+            padding: 12px;
+            background: #2a475e;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .settings-btn:hover, .modal-buttons button:hover, .confirm-btn:hover {
+            background: #66c0f4;
+            transform: translateX(5px);
+        }
+        .settings-btn.danger, .modal-cancel, .confirm-yes {
+            background: #8b3c3c;
+        }
+        .settings-btn.danger:hover, .modal-cancel:hover, .confirm-yes:hover {
+            background: #ac4c4c;
+            transform: scale(1.02);
+        }
+        .modal-save:hover, .confirm-no:hover {
+            transform: scale(1.02);
+        }
+        .close-settings {
+            margin-top: 15px;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #66c0f4;
+            border-radius: 10px;
+            color: #66c0f4;
+            cursor: pointer;
+            width: 100%;
+        }
+        body[data-theme="pink"] .close-settings {
+            border-color: #ff99cc;
+            color: #ff99cc;
+        }
+        .modal-dialog input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+        }
+        .modal-dialog input:focus { outline: none; border-color: #66c0f4; }
+        
+        /* ============================================ */
+        /* ========== 9. НИЖНИЙ КОЛОНТИТУЛ ========== */
+        /* ============================================ */
+        .github-link {
+            text-align: center;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            border: 1px solid rgba(102, 192, 244, 0.3);
+            transition: all 0.2s ease;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .github-link:hover {
+            border-color: #66c0f4;
+            background: rgba(102, 192, 244, 0.1);
+            transform: translateY(-2px);
+        }
+        .github-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #66c0f4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .github-link a:hover { text-decoration: underline; }
+        .github-link svg {
+            width: 20px;
+            height: 20px;
+            fill: #66c0f4;
+            transition: fill 0.2s;
+        }
+        .github-link:hover svg { fill: #ffffff; }
+        body[data-theme="minimalism"] .github-link a { color: #333; }
+        body[data-theme="minimalism"] .github-link svg { fill: #333; }
+        body[data-theme="amber"] .github-link a { color: #ffb347; }
+        body[data-theme="amber"] .github-link svg { fill: #ffb347; }
+        body[data-theme="pink"] .github-link a { color: #ff99cc; }
+        body[data-theme="pink"] .github-link svg { fill: #ff99cc; }
+        
+        /* ============================================ */
+        /* ========== 10. УВЕДОМЛЕНИЯ ========== */
+        /* ============================================ */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -702,200 +961,233 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             animation: slideIn 0.3s;
             z-index: 1000;
         }
-        
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+        
+        /* ============================================ */
+        /* ========== 11. АДАПТИВНОСТЬ ========== */
+        /* ============================================ */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .tiles-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 140px)); gap: 12px; }
+            .tile img { width: 44px; height: 44px; }
+            .add-tile-btn { min-height: 120px; }
+            .add-tile-btn svg { width: 36px; height: 36px; }
+            .top-bar { flex-direction: column; }
+            .pure-icon, .add-icon-circle { width: 60px; height: 60px; }
+            .add-icon-circle svg { width: 36px; height: 36px; }
+            .radio-float-btn { width: 60px; height: 60px; }
+            .radio-player-box { border-radius: 30px; padding: 12px 16px; gap: 12px; }
+            .station-info { text-align: center; min-width: 120px; }
+            .volume-slider { width: 100px; }
+            .right-area { align-items: flex-start; width: 100%; }
+            .right-icons { justify-content: flex-start; }
+            .add-radio-card { min-width: 100px; }
+            .export-reminder { max-width: 280px; padding: 10px 15px; }
+            .delete-tile, .delete-radio { width: 18px; height: 18px; }
+            .delete-tile svg, .delete-radio svg { width: 10px; height: 10px; }
+        }
     </style>
 </head>
-<body>
-    <!-- Плавающая переносимая кнопка радио -->
+<body data-theme="default">
     <div id="radioFloatBtn" class="radio-float-btn" title="Перетащите мышкой | Нажмите для Play/Pause">
-        <img id="floatIcon" class="float-icon" src="https://img.icons8.com/?size=100&id=ZfzQA6FzEiPP&format=png&color=5C7CFA" alt="Play/Pause">
+        <img id="floatIcon" class="float-icon" src="https://img.icons8.com/?size=100&id=ZfzQA6FzEiPP&format=png&color=66C0F4" alt="Play/Pause">
     </div>
-    
-    <div class="lang-switch" id="langSwitch">EN</div>
     
     <div class="container">
         <div class="top-bar">
             <div class="left-area">
+                <div class="theme-dots">
+                    <div class="theme-dot active" data-theme="default" style="background: #66c0f4;"></div>
+                    <div class="theme-dot" data-theme="minimalism" style="background: #ccc;"></div>
+                    <div class="theme-dot" data-theme="amber" style="background: #ffb347;"></div>
+                    <div class="theme-dot" data-theme="pink" style="background: #ff99cc;"></div>
+                </div>
                 <form class="search-form" id="searchForm">
                     <span class="search-icon">🔍</span>
                     <input type="text" class="search-input" id="searchInput" placeholder="Поиск в Google...">
                     <button type="submit" class="search-btn">Найти</button>
                 </form>
-                <div class="icon-row">
-                    <a href="https://web.telegram.org/k/" target="_blank" class="pure-icon" title="Telegram">
-                        <img src="https://img.icons8.com/?size=100&id=lUktdBVdL4Kb&format=png&color=FF005A" alt="TG">
-                    </a>
-                    <a href="https://discord.com/app" target="_blank" class="pure-icon" title="Discord">
-                        <img src="https://img.icons8.com/?size=100&id=30888&format=png&color=FF005A" alt="Discord">
-                    </a>
-                    <a href="https://music.youtube.com/" target="_blank" class="pure-icon" title="YouTube Music">
-                        <img src="https://img.icons8.com/?size=100&id=Mw6P3tmWMfOB&format=png&color=FF005A" alt="YouTube Music">
-                    </a>
-                    <a href="https://music.yandex.ru/" target="_blank" class="pure-icon" title="Yandex Music">
-                        <img src="https://img.icons8.com/?size=100&id=DGHVPGM9dSp4&format=png&color=FF005A" alt="Yandex Music">
-                    </a>
-                    <a href="https://vk.com/" target="_blank" class="pure-icon" title="VK">
-                        <img src="https://img.icons8.com/?size=100&id=60454&format=png&color=FF005A" alt="VK">
-                    </a>
-                </div>
+                <div class="icon-row" id="quickLinksContainer"></div>
             </div>
-            <div class="weather-widget">
-                <div class="elfsight-app-80b5fcbd-xxxx-xxxx-a654-xxxxxxxxxxxx" data-elfsight-app-lazy></div>
+            
+            <div class="right-area">
+                <div class="right-icons">
+                    <div class="lang-switch-btn" id="langSwitch">EN</div>
+                    <div class="icon-circle" id="settingsIcon" title="Настройки">⚙️</div>
+                </div>
+                <div class="weather-static" id="weatherStatic">
+                    <div class="temp" id="weatherTemp">--°C</div>
+                    <div id="weatherDesc">Загрузка...</div>
+                    <div class="city" id="weatherCity">Санкт-Петербург</div>
+                </div>
             </div>
         </div>
         
         <div id="tilesContainer" class="tiles-grid"></div>
         
-        <div class="add-form">
-            <input type="text" id="siteTitle" placeholder="Название сайта (например, YouTube)">
-            <input type="text" id="siteUrl" placeholder="Ссылка (https://youtube.com)">
-            <button id="addBtn">➕ Добавить плитку</button>
-        </div>
-        
         <div class="radio-section">
-            <div class="radio-top-row">
-                <div class="radio-player-box">
-                    <div class="current-station" id="currentStationName">🎵 Выберите радио</div>
-                    <audio id="radio-player" controls></audio>
+            <div class="radio-player-box" id="playerContainer">
+                <button class="play-btn" id="customPlayBtn">
+                    <svg id="playIcon" class="icon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <div class="station-info">
+                    <span class="station-name" id="currentStationDisplay">Выберите радио</span>
+                    <span class="station-status" id="statusText">Off-line</span>
                 </div>
-                <button class="add-radio-btn" id="showAddRadioBtn">➕ Добавить радио</button>
-            </div>
-            
-            <div class="radio-add-form" id="radioAddForm">
-                <input type="text" id="radioName" placeholder="Название радио (например, Record)">
-                <input type="text" id="radioUrl" placeholder="Ссылка на поток (https://...mp3, .aac)">
-                <button id="saveRadioBtn">💾 Сохранить</button>
-                <button id="cancelRadioBtn" style="background:#8b3c3c;">❌ Отмена</button>
+                <input type="range" id="volumeControl" class="volume-slider" min="0" max="1" step="0.05" value="0.5">
             </div>
             
             <div id="radioList" class="radio-grid"></div>
         </div>
         
-        <div class="controls-footer">
-            <button id="exportBtn" class="control-btn">📤 Экспорт закладок</button>
-            <button id="importBtn" class="control-btn">📥 Импорт закладок</button>
-            <button id="resetBtn" class="control-btn danger">🗑️ Сбросить всё</button>
+        <div class="github-link">
+            <a href="https://github.com/blog1703/Steam-Overlay-SpeedDial" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.05-.015-2.06-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.082-.73.082-.73 1.205.085 1.838 1.237 1.838 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                Исходный код на GitHub
+            </a>
         </div>
     </div>
 
     <script>
-        // ========== КЭШИРОВАННЫЕ DOM-ЭЛЕМЕНТЫ ==========
+        // ============================================================
+        // ========== 1. ПОГОДА (ручной выбор города) ==========
+        // ============================================================
+        let weatherCity = localStorage.getItem('steam_weather_city') || "Санкт-Петербург";
+        
+        async function fetchWeather() {
+            try {
+                const url = `https://wttr.in/${encodeURIComponent(weatherCity)}?format=%t+%c+%C&lang=ru`;
+                const response = await fetch(url);
+                const data = await response.text();
+                const tempMatch = data.match(/(-?\d+°C)/);
+                const descMatch = data.match(/[+-]?\d+°C\s+(.+)/);
+                
+                if (tempMatch) document.getElementById('weatherTemp').textContent = tempMatch[0];
+                if (descMatch) document.getElementById('weatherDesc').textContent = descMatch[1];
+                document.getElementById('weatherCity').textContent = weatherCity;
+            } catch(e) {
+                console.error('Weather error:', e);
+                document.getElementById('weatherDesc').textContent = 'Ошибка загрузки';
+            }
+        }
+        
+        // ============================================================
+        // ========== 2. DOM ЭЛЕМЕНТЫ ==========
+        // ============================================================
         const dom = {
             tilesContainer: document.getElementById('tilesContainer'),
             radioList: document.getElementById('radioList'),
-            radioPlayer: document.getElementById('radio-player'),
-            currentStationName: document.getElementById('currentStationName'),
+            radioPlayer: null,
+            currentStationDisplay: document.getElementById('currentStationDisplay'),
+            statusText: document.getElementById('statusText'),
+            customPlayBtn: document.getElementById('customPlayBtn'),
+            playIcon: document.getElementById('playIcon'),
+            volumeControl: document.getElementById('volumeControl'),
+            playerContainer: document.getElementById('playerContainer'),
             searchInput: document.getElementById('searchInput'),
             searchForm: document.getElementById('searchForm'),
-            siteTitle: document.getElementById('siteTitle'),
-            siteUrl: document.getElementById('siteUrl'),
-            addBtn: document.getElementById('addBtn'),
-            exportBtn: document.getElementById('exportBtn'),
-            importBtn: document.getElementById('importBtn'),
-            resetBtn: document.getElementById('resetBtn'),
-            showAddRadioBtn: document.getElementById('showAddRadioBtn'),
-            radioAddForm: document.getElementById('radioAddForm'),
-            radioName: document.getElementById('radioName'),
-            radioUrl: document.getElementById('radioUrl'),
-            saveRadioBtn: document.getElementById('saveRadioBtn'),
-            cancelRadioBtn: document.getElementById('cancelRadioBtn'),
             langSwitch: document.getElementById('langSwitch'),
+            settingsIcon: document.getElementById('settingsIcon'),
             floatBtn: document.getElementById('radioFloatBtn'),
-            floatIcon: document.getElementById('floatIcon')
+            floatIcon: document.getElementById('floatIcon'),
+            quickLinksContainer: document.getElementById('quickLinksContainer')
         };
         
-        // ========== СОСТОЯНИЕ ==========
+        const audioElement = new Audio();
+        dom.radioPlayer = audioElement;
+        
+        // ============================================================
+        // ========== 3. СОСТОЯНИЕ ==========
+        // ============================================================
         const state = {
             bookmarks: [],
+            quickLinks: [],
             radioStations: [],
             currentRadio: null,
             currentLang: 'ru',
+            currentTheme: 'default',
             isDragging: false,
             dragStartX: 0,
             dragStartY: 0,
             startLeft: 0,
-            startTop: 0
+            startTop: 0,
+            isPlaying: false,
+            remindersEnabled: true,
+            lastReminderShown: 0
         };
         
-        // ========== ПЕРЕВОДЫ ==========
+        let reminderTimeout = null;
+        
+        // ============================================================
+        // ========== 4. ПЕРЕВОДЫ ==========
+        // ============================================================
         const translations = {
             ru: {
-                searchPlaceholder: "Поиск в Google...",
-                searchBtn: "Найти",
-                addSitePlaceholder: "Название сайта (например, YouTube)",
-                addUrlPlaceholder: "Ссылка (https://youtube.com)",
-                addSiteBtn: "➕ Добавить плитку",
-                addRadioBtn: "➕ Добавить радио",
-                radioNamePlaceholder: "Название радио (например, Record)",
-                radioUrlPlaceholder: "Ссылка на поток (https://...mp3, .aac)",
-                saveRadio: "💾 Сохранить",
-                cancelRadio: "❌ Отмена",
-                exportBtn: "📤 Экспорт закладок",
-                importBtn: "📥 Импорт закладок",
-                resetBtn: "🗑️ Сбросить всё",
+                searchPlaceholder: "Поиск в Google...", searchBtn: "Найти",
                 noBookmarks: "Нет закладок. Добавьте первую плитку!",
-                noRadio: "Нет радиостанций. Нажмите \"+ Добавить радио\"",
-                currentStation: "🎵 Сейчас играет: ",
-                selectRadio: "🎵 Выберите радио",
-                deleteConfirm: "Удалить радиостанцию",
-                deleteYes: "Да, удалить",
-                deleteNo: "Отмена",
-                stationDeleted: "Радиостанция удалена",
-                fillFields: "Заполните название и ссылку",
-                added: "✓ Плитка добавлена",
-                invalidUrl: "Некорректная ссылка",
-                exportDone: "Экспорт выполнен",
-                importSuccess: "Импорт успешен!",
-                importError: "Ошибка при импорте",
-                resetConfirm: "Удалить все закладки?",
-                resetDone: "Все закладки удалены",
-                radioAdded: "✓ Радио добавлено"
+                noRadio: "Нет радиостанций. Нажмите \"+\" чтобы добавить",
+                selectRadio: "Выберите радио",
+                deleteConfirm: "Удалить радиостанцию", deleteYes: "Да, удалить", deleteNo: "Отмена",
+                stationDeleted: "Радиостанция удалена", fillFields: "Заполните название и ссылку",
+                added: "✓ Плитка добавлена", invalidUrl: "Некорректная ссылка",
+                exportDone: "Экспорт выполнен", importSuccess: "Импорт успешен!", importError: "Ошибка при импорте",
+                resetConfirm: "Удалить все закладки?", resetDone: "Все закладки удалены",
+                radioAdded: "✓ Радио добавлено",
+                addQuickLinkTitle: "Добавить ярлык", addQuickLinkName: "Название", addQuickLinkUrl: "Ссылка на сервис (https://...)",
+                addQuickLinkIcon: "Прямая ссылка на иконку PNG", addQuickLinkSave: "Добавить", addQuickLinkCancel: "Отмена",
+                quickLinkAdded: "✓ Ярлык добавлен", quickLinkDelete: "Ярлык удален",
+                addTileTitle: "Добавить плитку", addTileName: "Название сайта", addTileUrl: "Ссылка (https://...)",
+                addTileSave: "Добавить", addTileCancel: "Отмена",
+                exportFull: "📦 Полный экспорт (все данные)", importFull: "📦 Полный импорт (все данные)",
+                addRadioTitle: "Добавить радиостанцию", addRadioName: "Название радио", addRadioUrl: "Ссылка на поток",
+                addRadioSave: "Добавить", addRadioCancel: "Отмена",
+                onAir: "On Air", paused: "Paused", offline: "Off-line",
+                remindersToggle: "🔔 Показывать напоминания о экспорте",
+                reminderTitle: "⚠️ Сохраните настройки!", reminderText: "Экспортируйте, чтобы не потерять: закладки, ярлыки и радио",
+                reminderHint: "⚙️ Настройки → 📦 Полный экспорт", reminderClose: "Закрыть",
+                weatherCityLabel: "🌍 Город для погоды",
+                saveCity: "💾 Сохранить город"
             },
             en: {
-                searchPlaceholder: "Search Google...",
-                searchBtn: "Search",
-                addSitePlaceholder: "Site name (e.g., YouTube)",
-                addUrlPlaceholder: "URL (https://youtube.com)",
-                addSiteBtn: "➕ Add tile",
-                addRadioBtn: "➕ Add radio",
-                radioNamePlaceholder: "Radio name (e.g., Record)",
-                radioUrlPlaceholder: "Stream URL (https://...mp3, .aac)",
-                saveRadio: "💾 Save",
-                cancelRadio: "❌ Cancel",
-                exportBtn: "📤 Export bookmarks",
-                importBtn: "📥 Import bookmarks",
-                resetBtn: "🗑️ Reset all",
+                searchPlaceholder: "Search Google...", searchBtn: "Search",
                 noBookmarks: "No bookmarks. Add your first tile!",
-                noRadio: "No radio stations. Click \"+ Add radio\"",
-                currentStation: "🎵 Now playing: ",
-                selectRadio: "🎵 Select radio",
-                deleteConfirm: "Delete radio station",
-                deleteYes: "Yes, delete",
-                deleteNo: "Cancel",
-                stationDeleted: "Radio station deleted",
-                fillFields: "Fill in name and URL",
-                added: "✓ Tile added",
-                invalidUrl: "Invalid URL",
-                exportDone: "Export completed",
-                importSuccess: "Import successful!",
-                importError: "Import error",
-                resetConfirm: "Delete all bookmarks?",
-                resetDone: "All bookmarks deleted",
-                radioAdded: "✓ Radio added"
+                noRadio: "No radio stations. Click \"+\" to add",
+                selectRadio: "Select radio",
+                deleteConfirm: "Delete radio station", deleteYes: "Yes, delete", deleteNo: "Cancel",
+                stationDeleted: "Radio station deleted", fillFields: "Fill in name and URL",
+                added: "✓ Tile added", invalidUrl: "Invalid URL",
+                exportDone: "Export completed", importSuccess: "Import successful!", importError: "Import error",
+                resetConfirm: "Delete all bookmarks?", resetDone: "All bookmarks deleted",
+                radioAdded: "✓ Radio added",
+                addQuickLinkTitle: "Add shortcut", addQuickLinkName: "Name", addQuickLinkUrl: "URL (https://...)",
+                addQuickLinkIcon: "Direct link to PNG icon", addQuickLinkSave: "Add", addQuickLinkCancel: "Cancel",
+                quickLinkAdded: "✓ Shortcut added", quickLinkDelete: "Shortcut deleted",
+                addTileTitle: "Add tile", addTileName: "Site name", addTileUrl: "URL (https://...)",
+                addTileSave: "Add", addTileCancel: "Cancel",
+                exportFull: "📦 Full export (all data)", importFull: "📦 Full import (all data)",
+                addRadioTitle: "Add radio station", addRadioName: "Radio name", addRadioUrl: "Stream URL",
+                addRadioSave: "Add", addRadioCancel: "Cancel",
+                onAir: "On Air", paused: "Paused", offline: "Off-line",
+                remindersToggle: "🔔 Show export reminders",
+                reminderTitle: "⚠️ Save your settings!", reminderText: "Export to keep: bookmarks, shortcuts & radio",
+                reminderHint: "⚙️ Settings → 📦 Full export", reminderClose: "Close",
+                weatherCityLabel: "🌍 Weather city",
+                saveCity: "💾 Save city"
             }
         };
         
         function t(key) { return translations[state.currentLang][key] || key; }
         
-        // ========== TOAST С ОГРАНИЧЕНИЕМ ==========
         function showToast(msg) {
             const existing = document.querySelectorAll('.toast');
-            if (existing.length > 3) existing[0].remove();
-            
+            if (existing.length > 3) existing[0]?.remove();
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = msg;
@@ -903,7 +1195,361 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             setTimeout(() => toast.remove(), 2000);
         }
         
-        // ========== РАДИО ==========
+        // ============================================================
+        // ========== 5. НАПОМИНАНИЕ ==========
+        // ============================================================
+        function showExportReminder() {
+            if (!state.remindersEnabled) return;
+            if (reminderTimeout) return;
+            
+            const now = Date.now();
+            if (now - state.lastReminderShown < 30000) return;
+            state.lastReminderShown = now;
+            
+            const existing = document.querySelector('.export-reminder');
+            if (existing) existing.remove();
+            
+            const reminder = document.createElement('div');
+            reminder.className = 'export-reminder';
+            reminder.innerHTML = `
+                <div class="reminder-content">
+                    <div class="reminder-icon">⚠️</div>
+                    <div class="reminder-text">
+                        <strong>${t('reminderTitle')}</strong><br>
+                        ${t('reminderText')}<br>
+                        <div class="reminder-hint">${t('reminderHint')}</div>
+                    </div>
+                    <div class="reminder-close" title="${t('reminderClose')}">✕</div>
+                </div>
+            `;
+            document.body.appendChild(reminder);
+            
+            reminder.querySelector('.reminder-close').onclick = () => {
+                reminder.remove();
+                if (reminderTimeout) clearTimeout(reminderTimeout);
+                reminderTimeout = null;
+            };
+            
+            reminderTimeout = setTimeout(() => {
+                if (reminder && reminder.parentNode) reminder.remove();
+                reminderTimeout = null;
+            }, 8000);
+        }
+        
+        // ============================================================
+        // ========== 6. ТЕМЫ ==========
+        // ============================================================
+        function setTheme(theme) {
+            state.currentTheme = theme;
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('dashboard_theme', theme);
+            document.querySelectorAll('.theme-dot').forEach(dot => {
+                if (dot.dataset.theme === theme) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+            updateRadioIconColor();
+        }
+        
+        function updateRadioIconColor() {
+            const colors = { default: '66C0F4', minimalism: 'FF6B6B', amber: 'FFAA33', pink: 'FF99CC' };
+            const color = colors[state.currentTheme] || '66C0F4';
+            if (state.isPlaying) {
+                dom.floatIcon.src = `https://img.icons8.com/?size=100&id=EEH2MmtvmpiW&format=png&color=${color}`;
+                dom.floatIcon.classList.add('pulsing');
+            } else {
+                dom.floatIcon.src = `https://img.icons8.com/?size=100&id=ZfzQA6FzEiPP&format=png&color=${color}`;
+                dom.floatIcon.classList.remove('pulsing');
+            }
+        }
+        
+        function loadTheme() {
+            const saved = localStorage.getItem('dashboard_theme');
+            if (saved && (saved === 'default' || saved === 'minimalism' || saved === 'amber' || saved === 'pink')) {
+                setTheme(saved);
+            } else {
+                setTheme('default');
+            }
+        }
+        
+        // ============================================================
+        // ========== 7. НАСТРОЙКИ ==========
+        // ============================================================
+        function exportFullData() {
+            const exportData = {
+                version: "1.2",
+                exportDate: new Date().toISOString(),
+                bookmarks: state.bookmarks,
+                quickLinks: state.quickLinks,
+                radioStations: state.radioStations,
+                theme: state.currentTheme,
+                language: state.currentLang,
+                remindersEnabled: state.remindersEnabled,
+                weatherCity: weatherCity
+            };
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'}));
+            a.download = `steam_dashboard_backup_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+            showToast(t('exportDone'));
+        }
+        
+        function importFullData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        if (imported.bookmarks) { state.bookmarks = imported.bookmarks; saveData(); render(); }
+                        if (imported.quickLinks) { state.quickLinks = imported.quickLinks; saveQuickLinks(); renderQuickLinks(); }
+                        if (imported.radioStations) { state.radioStations = imported.radioStations; saveRadio(); renderRadio(); }
+                        if (imported.theme) setTheme(imported.theme);
+                        if (imported.language) { state.currentLang = imported.language; localStorage.setItem('steam_language', state.currentLang); updateLanguage(); }
+                        if (typeof imported.remindersEnabled === 'boolean') { state.remindersEnabled = imported.remindersEnabled; localStorage.setItem('steam_reminders', state.remindersEnabled); }
+                        if (imported.weatherCity) { 
+                            weatherCity = imported.weatherCity; 
+                            localStorage.setItem('steam_weather_city', weatherCity);
+                            fetchWeather();
+                        }
+                        showToast(t('importSuccess'));
+                    } catch(err) { showToast(t('importError')); }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        function resetAllData() {
+            if (confirm(t('resetConfirm'))) {
+                state.bookmarks = [];
+                state.quickLinks = [];
+                state.radioStations = [];
+                state.currentRadio = null;
+                setTheme('default');
+                weatherCity = "Санкт-Петербург";
+                localStorage.setItem('steam_weather_city', weatherCity);
+                fetchWeather();
+                saveData(); saveQuickLinks(); saveRadio();
+                render(); renderQuickLinks(); renderRadio();
+                audioElement.pause();
+                audioElement.src = '';
+                audioElement.load();
+                state.isPlaying = false;
+                state.currentRadio = null;
+                dom.currentStationDisplay.textContent = t('selectRadio');
+                dom.statusText.textContent = t('offline');
+                dom.playerContainer.classList.remove('playing');
+                dom.playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                updateRadioIconColor();
+                showToast(t('resetDone'));
+            }
+        }
+        
+        function showSettings() {
+            const modal = document.createElement('div');
+            modal.className = 'settings-modal';
+            modal.innerHTML = `
+                <div class="settings-dialog">
+                    <h3>⚙️ ${state.currentLang === 'ru' ? 'Настройки' : 'Settings'}</h3>
+                    <div class="settings-buttons">
+                        <button class="settings-btn" id="settingsExportBtn" style="padding:12px;margin:5px;background:#2a475e;border:none;border-radius:10px;color:white;cursor:pointer;">📦 ${t('exportFull')}</button>
+                        <button class="settings-btn" id="settingsImportBtn" style="padding:12px;margin:5px;background:#2a475e;border:none;border-radius:10px;color:white;cursor:pointer;">📦 ${t('importFull')}</button>
+                        <button class="settings-btn danger" id="settingsResetBtn" style="padding:12px;margin:5px;background:#8b3c3c;border:none;border-radius:10px;color:white;cursor:pointer;">🗑️ ${state.currentLang === 'ru' ? 'Сбросить всё' : 'Reset all'}</button>
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:8px 12px;background:rgba(102,192,244,0.1);border-radius:10px;">
+                            <span>${t('remindersToggle')}</span>
+                            <input type="checkbox" id="remindersToggleCheckbox" ${state.remindersEnabled ? 'checked' : ''} style="width:20px;height:20px;cursor:pointer;">
+                        </div>
+                        <div style="margin-top:15px;padding:8px 12px;background:rgba(102,192,244,0.1);border-radius:10px;">
+                            <div style="margin-bottom:8px;">${t('weatherCityLabel')}</div>
+                            <input type="text" id="weatherCityInput" value="${weatherCity}" style="width:100%;padding:8px;border-radius:8px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);color:white;margin-bottom:8px;">
+                            <button id="saveCityBtn" style="padding:8px 16px;background:#66c0f4;border:none;border-radius:8px;cursor:pointer;color:#1a1a2e;">${t('saveCity')}</button>
+                        </div>
+                    </div>
+                    <button class="close-settings" id="closeSettingsBtn" style="margin-top:15px;padding:10px;background:transparent;border:1px solid #66c0f4;border-radius:10px;color:#66c0f4;cursor:pointer;">${state.currentLang === 'ru' ? 'Закрыть' : 'Close'}</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const toggleCheckbox = modal.querySelector('#remindersToggleCheckbox');
+            toggleCheckbox.onchange = (e) => {
+                state.remindersEnabled = e.target.checked;
+                localStorage.setItem('steam_reminders', state.remindersEnabled);
+            };
+            
+            const cityInput = modal.querySelector('#weatherCityInput');
+            const saveCityBtn = modal.querySelector('#saveCityBtn');
+            saveCityBtn.onclick = () => {
+                const newCity = cityInput.value.trim();
+                if (newCity) {
+                    weatherCity = newCity;
+                    localStorage.setItem('steam_weather_city', weatherCity);
+                    fetchWeather();
+                    showToast(`Город изменён на ${weatherCity}`);
+                }
+            };
+            
+            modal.querySelector('#settingsExportBtn').onclick = () => { exportFullData(); modal.remove(); };
+            modal.querySelector('#settingsImportBtn').onclick = () => { importFullData(); modal.remove(); };
+            modal.querySelector('#settingsResetBtn').onclick = () => { resetAllData(); modal.remove(); };
+            modal.querySelector('#closeSettingsBtn').onclick = () => modal.remove();
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+        
+        // ============================================================
+        // ========== 8. ЯРЛЫКИ ==========
+        // ============================================================
+        function loadQuickLinks() {
+            const saved = localStorage.getItem('steam_quicklinks');
+            if (saved) state.quickLinks = JSON.parse(saved);
+            if (!state.quickLinks || state.quickLinks.length === 0) {
+                state.quickLinks = [
+                    { id: crypto.randomUUID(), name: "Telegram", url: "https://web.telegram.org/k/", icon: "https://img.icons8.com/?size=100&id=lUktdBVdL4Kb&format=png&color=FF005A" },
+                    { id: crypto.randomUUID(), name: "Discord", url: "https://discord.com/app", icon: "https://img.icons8.com/?size=100&id=30888&format=png&color=FF005A" },
+                    { id: crypto.randomUUID(), name: "YouTube Music", url: "https://music.youtube.com/", icon: "https://img.icons8.com/?size=100&id=Mw6P3tmWMfOB&format=png&color=FF005A" },
+                    { id: crypto.randomUUID(), name: "Yandex Music", url: "https://music.yandex.ru/", icon: "https://img.icons8.com/?size=100&id=DGHVPGM9dSp4&format=png&color=FF005A" },
+                    { id: crypto.randomUUID(), name: "VK", url: "https://vk.com/", icon: "https://img.icons8.com/?size=100&id=60454&format=png&color=FF005A" }
+                ];
+                saveQuickLinks();
+            }
+            renderQuickLinks();
+        }
+        
+        function saveQuickLinks() { localStorage.setItem('steam_quicklinks', JSON.stringify(state.quickLinks)); }
+        
+        function addQuickLink(name, url, iconUrl) {
+            if (!name || !url) { showToast(t('fillFields')); return false; }
+            if (!url.startsWith('http')) url = 'https://' + url;
+            try {
+                new URL(url);
+                state.quickLinks.push({ id: crypto.randomUUID(), name: name, url: url, icon: iconUrl || 'https://img.icons8.com/?size=100&id=9js2jhDqLr76&format=png&color=FF005A' });
+                saveQuickLinks();
+                renderQuickLinks();
+                showExportReminder();
+                return true;
+            } catch(e) { showToast(t('invalidUrl')); return false; }
+        }
+        
+        function deleteQuickLink(id) {
+            state.quickLinks = state.quickLinks.filter(link => link.id !== id);
+            saveQuickLinks();
+            renderQuickLinks();
+            showToast(t('quickLinkDelete'));
+        }
+        
+        function renderQuickLinks() {
+            if (!dom.quickLinksContainer) return;
+            const fragment = document.createDocumentFragment();
+            state.quickLinks.forEach((link, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+                wrapper.style.display = 'inline-flex';
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.target = '_blank';
+                a.className = 'pure-icon';
+                a.title = link.name;
+                const img = document.createElement('img');
+                img.src = link.icon;
+                img.alt = link.name;
+                img.onerror = () => img.src = 'https://img.icons8.com/?size=100&id=9js2jhDqLr76&format=png&color=FF005A';
+                a.appendChild(img);
+                
+                const deleteBtn = document.createElement('div');
+                deleteBtn.className = 'delete-tile';
+                deleteBtn.style.position = 'absolute';
+                deleteBtn.style.top = '4px';
+                deleteBtn.style.right = '4px';
+                deleteBtn.style.width = '22px';
+                deleteBtn.style.height = '22px';
+                deleteBtn.style.background = 'rgba(0,0,0,0.7)';
+                deleteBtn.style.borderRadius = '50%';
+                deleteBtn.style.cursor = 'pointer';
+                deleteBtn.style.opacity = '0';
+                deleteBtn.style.transition = 'opacity 0.2s';
+                deleteBtn.style.display = 'flex';
+                deleteBtn.style.alignItems = 'center';
+                deleteBtn.style.justifyContent = 'center';
+                
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.style.width = '14px';
+                svg.style.height = '14px';
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M18 6L6 18M6 6L18 18');
+                path.setAttribute('stroke', '#ff8a8a');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path);
+                deleteBtn.appendChild(svg);
+                
+                deleteBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); deleteQuickLink(link.id); };
+                wrapper.appendChild(a);
+                wrapper.appendChild(deleteBtn);
+                wrapper.onmouseenter = () => { deleteBtn.style.opacity = '1'; };
+                wrapper.onmouseleave = () => { deleteBtn.style.opacity = '0'; };
+                fragment.appendChild(wrapper);
+            });
+            const addBtn = document.createElement('div');
+            addBtn.className = 'add-icon-circle';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 4V20M20 12H4');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-width', '2');
+            svg.appendChild(path);
+            addBtn.appendChild(svg);
+            addBtn.title = t('addQuickLinkTitle');
+            addBtn.onclick = () => { showAddQuickLinkModal(); };
+            fragment.appendChild(addBtn);
+            dom.quickLinksContainer.innerHTML = '';
+            dom.quickLinksContainer.appendChild(fragment);
+        }
+        
+        function showAddQuickLinkModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <h3>${t('addQuickLinkTitle')}</h3>
+                    <input type="text" id="modalQuickName" placeholder="${t('addQuickLinkName')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <input type="text" id="modalQuickUrl" placeholder="${t('addQuickLinkUrl')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <input type="text" id="modalQuickIcon" placeholder="${t('addQuickLinkIcon')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <div class="modal-buttons" style="display:flex;gap:15px;justify-content:center;">
+                        <button id="modalSaveBtn" class="modal-save" style="padding:12px 25px;background:#66c0f4;border:none;border-radius:30px;cursor:pointer;">${t('addQuickLinkSave')}</button>
+                        <button id="modalCancelBtn" class="modal-cancel" style="padding:12px 25px;background:#8b3c3c;border:none;border-radius:30px;cursor:pointer;">${t('addQuickLinkCancel')}</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const nameInput = modal.querySelector('#modalQuickName');
+            const urlInput = modal.querySelector('#modalQuickUrl');
+            const iconInput = modal.querySelector('#modalQuickIcon');
+            const saveBtn = modal.querySelector('#modalSaveBtn');
+            const cancelBtn = modal.querySelector('#modalCancelBtn');
+            const closeModal = () => modal.remove();
+            saveBtn.onclick = () => {
+                const name = nameInput.value.trim();
+                const url = urlInput.value.trim();
+                const icon = iconInput.value.trim();
+                if (addQuickLink(name, url, icon)) {
+                    closeModal();
+                    showToast(t('quickLinkAdded'));
+                }
+            };
+            cancelBtn.onclick = closeModal;
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+        }
+        
+        // ============================================================
+        // ========== 9. РАДИО ==========
+        // ============================================================
         function loadRadio() {
             const saved = localStorage.getItem('steam_radio');
             if (saved) state.radioStations = JSON.parse(saved);
@@ -922,19 +1568,64 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
         
         function saveRadio() { localStorage.setItem('steam_radio', JSON.stringify(state.radioStations)); }
         
+        function stopRadio() {
+            state.isPlaying = false;
+            state.currentRadio = null;
+            audioElement.pause();
+            audioElement.src = '';
+            audioElement.load();
+            dom.currentStationDisplay.textContent = t('selectRadio');
+            dom.statusText.textContent = t('offline');
+            dom.playerContainer.classList.remove('playing');
+            dom.playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            updateRadioIconColor();
+        }
+        
         function playRadio(station) {
             state.currentRadio = station;
-            
-            // Очищаем старый поток
-            dom.radioPlayer.pause();
-            dom.radioPlayer.src = '';
-            dom.radioPlayer.load();
-            
-            dom.radioPlayer.src = station.url;
-            dom.currentStationName.textContent = t('currentStation') + station.name;
-            dom.radioPlayer.play().catch(e => console.log('Play manually'));
+            state.isPlaying = true;
+            audioElement.src = station.url;
+            dom.currentStationDisplay.textContent = station.name;
+            dom.statusText.textContent = t('onAir');
+            dom.playerContainer.classList.add('playing');
+            dom.playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            audioElement.play().catch(e => {
+                state.isPlaying = false;
+                dom.statusText.textContent = t('offline');
+                dom.playerContainer.classList.remove('playing');
+                dom.playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            });
             renderRadio();
-            updateFloatButton();
+            updateRadioIconColor();
+        }
+        
+        function togglePlayPause() {
+            if (!state.currentRadio && state.radioStations.length > 0) {
+                playRadio(state.radioStations[0]);
+                return;
+            }
+            if (state.isPlaying) {
+                audioElement.pause();
+                state.isPlaying = false;
+                dom.statusText.textContent = t('paused');
+                dom.playerContainer.classList.remove('playing');
+                dom.playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                updateRadioIconColor();
+            } else {
+                if (state.currentRadio) {
+                    audioElement.play().then(() => {
+                        state.isPlaying = true;
+                        dom.statusText.textContent = t('onAir');
+                        dom.playerContainer.classList.add('playing');
+                        dom.playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                        updateRadioIconColor();
+                    }).catch(e => { if (state.currentRadio) playRadio(state.currentRadio); });
+                } else if (state.radioStations.length > 0) {
+                    playRadio(state.radioStations[0]);
+                } else {
+                    showToast(t('noRadio'));
+                }
+            }
         }
         
         function confirmDeleteRadio(station) {
@@ -943,36 +1634,26 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             overlay.innerHTML = `
                 <div class="confirm-dialog">
                     <p>${t('deleteConfirm')} <span class="station-name">${escapeHtml(station.name)}</span>?</p>
-                    <div class="confirm-buttons">
-                        <button class="confirm-btn confirm-yes" id="confirmYes">${t('deleteYes')}</button>
-                        <button class="confirm-btn confirm-no" id="confirmNo">${t('deleteNo')}</button>
+                    <div class="confirm-buttons" style="display:flex;gap:15px;justify-content:center;">
+                        <button class="confirm-btn confirm-yes" id="confirmYes" style="padding:8px 25px;background:#8b3c3c;border:none;border-radius:8px;color:white;cursor:pointer;">${t('deleteYes')}</button>
+                        <button class="confirm-btn confirm-no" id="confirmNo" style="padding:8px 25px;background:#2a475e;border:none;border-radius:8px;color:white;cursor:pointer;">${t('deleteNo')}</button>
                     </div>
                 </div>
             `;
             document.body.appendChild(overlay);
-            
             const yesBtn = document.getElementById('confirmYes');
             const noBtn = document.getElementById('confirmNo');
-            
             const handleYes = () => {
                 state.radioStations = state.radioStations.filter(s => s.id !== station.id);
                 saveRadio();
-                if (state.currentRadio && state.currentRadio.id === station.id) {
-                    state.currentRadio = null;
-                    dom.radioPlayer.pause();
-                    dom.radioPlayer.src = '';
-                    dom.radioPlayer.load();
-                    dom.currentStationName.textContent = t('selectRadio');
-                    updateFloatButton();
-                }
+                if (state.currentRadio && state.currentRadio.id === station.id) stopRadio();
                 renderRadio();
                 showToast(t('stationDeleted'));
                 overlay.remove();
             };
             const handleNo = () => overlay.remove();
-            
-            yesBtn.addEventListener('click', handleYes, { once: true });
-            noBtn.addEventListener('click', handleNo, { once: true });
+            yesBtn?.addEventListener('click', handleYes, { once: true });
+            noBtn?.addEventListener('click', handleNo, { once: true });
             overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
         }
         
@@ -982,39 +1663,92 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             state.radioStations.push({ id: crypto.randomUUID(), name: name, url: url });
             saveRadio();
             renderRadio();
+            showExportReminder();
             return true;
+        }
+        
+        function showAddRadioModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <h3>${t('addRadioTitle')}</h3>
+                    <input type="text" id="modalRadioName" placeholder="${t('addRadioName')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <input type="text" id="modalRadioUrl" placeholder="${t('addRadioUrl')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <div class="modal-buttons" style="display:flex;gap:15px;justify-content:center;">
+                        <button id="modalSaveBtn" class="modal-save" style="padding:12px 25px;background:#66c0f4;border:none;border-radius:30px;cursor:pointer;">${t('addRadioSave')}</button>
+                        <button id="modalCancelBtn" class="modal-cancel" style="padding:12px 25px;background:#8b3c3c;border:none;border-radius:30px;cursor:pointer;">${t('addRadioCancel')}</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const nameInput = modal.querySelector('#modalRadioName');
+            const urlInput = modal.querySelector('#modalRadioUrl');
+            const saveBtn = modal.querySelector('#modalSaveBtn');
+            const cancelBtn = modal.querySelector('#modalCancelBtn');
+            const closeModal = () => modal.remove();
+            saveBtn.onclick = () => {
+                const name = nameInput.value.trim();
+                const url = urlInput.value.trim();
+                if (addRadio(name, url)) { closeModal(); showToast(t('radioAdded')); }
+            };
+            cancelBtn.onclick = closeModal;
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
         }
         
         function renderRadio() {
             if (!dom.radioList) return;
             const fragment = document.createDocumentFragment();
-            
-            state.radioStations.forEach(station => {
+            state.radioStations.forEach((station, idx) => {
                 const card = document.createElement('div');
                 card.className = 'radio-card';
                 if (state.currentRadio && state.currentRadio.id === station.id) card.classList.add('active');
                 card.onclick = () => playRadio(station);
                 card.innerHTML = `
-                    <div class="radio-icon"><img src="https://img.icons8.com/?size=100&id=9js2jhDqLr76&format=png&color=000000" alt="radio"></div>
-                    <div class="radio-info">
-                        <div class="radio-name">${escapeHtml(station.name)}</div>
-                        <div class="radio-url">${escapeHtml(station.url.substring(0, 50))}${station.url.length > 50 ? '...' : ''}</div>
-                    </div>
-                    <div class="delete-radio">✕</div>
+                    <div class="radio-icon" style="width:32px;height:32px;"><img src="https://img.icons8.com/?size=100&id=9js2jhDqLr76&format=png&color=000000" style="width:28px;height:28px;"></div>
+                    <div class="radio-info" style="flex:1;"><div class="radio-name" style="font-size:14px;font-weight:500;">${escapeHtml(station.name)}</div><div class="radio-url" style="font-size:10px;opacity:0.6;">${escapeHtml(station.url.substring(0, 50))}${station.url.length > 50 ? '...' : ''}</div></div>
+                    <div class="delete-radio"></div>
                 `;
-                card.querySelector('.delete-radio').onclick = (e) => { e.stopPropagation(); confirmDeleteRadio(station); };
+                const deleteBtn = card.querySelector('.delete-radio');
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.style.width = '14px';
+                svg.style.height = '14px';
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M18 6L6 18M6 6L18 18');
+                path.setAttribute('stroke', '#ff8a8a');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path);
+                deleteBtn.appendChild(svg);
+                deleteBtn.onclick = (e) => { e.stopPropagation(); confirmDeleteRadio(station); };
                 fragment.appendChild(card);
             });
-            
+            const addCard = document.createElement('div');
+            addCard.className = 'add-radio-card';
+            addCard.onclick = () => showAddRadioModal();
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 4V20M20 12H4');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-width', '2');
+            svg.appendChild(path);
+            addCard.appendChild(svg);
+            fragment.appendChild(addCard);
             dom.radioList.innerHTML = '';
             dom.radioList.appendChild(fragment);
-            
             if (state.radioStations.length === 0) {
-                dom.radioList.innerHTML = `<div style="padding:20px; text-align:center; opacity:0.6;">${t('noRadio')}</div>`;
+                dom.radioList.innerHTML = `<div style="padding:20px;text-align:center;opacity:0.6;">${t('noRadio')}</div>`;
+                dom.radioList.appendChild(addCard);
             }
         }
         
-        // ========== ЗАКЛАДКИ ==========
+        // ============================================================
+        // ========== 10. ЗАКЛАДКИ ==========
+        // ============================================================
         function loadData() {
             const saved = localStorage.getItem('steam_dashboard');
             state.bookmarks = saved ? JSON.parse(saved) : [
@@ -1038,101 +1772,115 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
         function render() {
             if (!dom.tilesContainer) return;
             const fragment = document.createDocumentFragment();
-            
-            state.bookmarks.forEach((item, i) => {
+            state.bookmarks.forEach((item, idx) => {
                 const tile = document.createElement('div');
                 tile.className = 'tile';
-                tile.dataset.index = i;
-                tile.innerHTML = `
-                    <div class="delete-tile">✕</div>
-                    <img src="${getFavicon(item.url)}" onerror="this.src='https://www.google.com/s2/favicons?domain=steampowered.com'">
-                    <div class="title">${escapeHtml(item.title)}</div>
-                `;
+                tile.dataset.index = idx;
+                tile.addEventListener('click', (e) => { if (!e.target.closest('.delete-tile')) window.location.href = item.url; });
+                const deleteBtn = document.createElement('div');
+                deleteBtn.className = 'delete-tile';
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.style.width = '14px';
+                svg.style.height = '14px';
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M18 6L6 18M6 6L18 18');
+                path.setAttribute('stroke', '#ff8a8a');
+                path.setAttribute('stroke-width', '2');
+                svg.appendChild(path);
+                deleteBtn.appendChild(svg);
+                const img = document.createElement('img');
+                img.src = getFavicon(item.url);
+                img.onerror = () => img.src = 'https://www.google.com/s2/favicons?domain=steampowered.com';
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'title';
+                titleDiv.textContent = escapeHtml(item.title);
+                tile.appendChild(deleteBtn);
+                tile.appendChild(img);
+                tile.appendChild(titleDiv);
                 fragment.appendChild(tile);
             });
-            
+            const addTile = document.createElement('div');
+            addTile.className = 'add-tile-btn';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M12 4V20M20 12H4');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-width', '2');
+            svg.appendChild(path);
+            addTile.appendChild(svg);
+            addTile.onclick = () => showAddTileModal();
+            fragment.appendChild(addTile);
             dom.tilesContainer.innerHTML = '';
             dom.tilesContainer.appendChild(fragment);
-            
-            if (state.bookmarks.length === 0) {
-                dom.tilesContainer.innerHTML = `<div style="text-align:center; padding:50px;">${t('noBookmarks')}</div>`;
+            if (state.bookmarks.length === 0 && fragment.children.length === 1) {
+                dom.tilesContainer.innerHTML = `<div style="text-align:center;padding:50px;">${t('noBookmarks')}</div>`;
+                dom.tilesContainer.appendChild(addTile);
             }
         }
         
-        // Делегирование событий для плиток
+        function showAddTileModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <h3>${t('addTileTitle')}</h3>
+                    <input type="text" id="modalTileName" placeholder="${t('addTileName')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <input type="text" id="modalTileUrl" placeholder="${t('addTileUrl')}" autocomplete="off" style="width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:white;">
+                    <div class="modal-buttons" style="display:flex;gap:15px;justify-content:center;">
+                        <button id="modalSaveBtn" class="modal-save" style="padding:12px 25px;background:#66c0f4;border:none;border-radius:30px;cursor:pointer;">${t('addTileSave')}</button>
+                        <button id="modalCancelBtn" class="modal-cancel" style="padding:12px 25px;background:#8b3c3c;border:none;border-radius:30px;cursor:pointer;">${t('addTileCancel')}</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const nameInput = modal.querySelector('#modalTileName');
+            const urlInput = modal.querySelector('#modalTileUrl');
+            const saveBtn = modal.querySelector('#modalSaveBtn');
+            const cancelBtn = modal.querySelector('#modalCancelBtn');
+            const closeModal = () => modal.remove();
+            saveBtn.onclick = () => {
+                let title = nameInput.value.trim();
+                let url = urlInput.value.trim();
+                if (!title || !url) { showToast(t('fillFields')); return; }
+                if (!url.startsWith('http')) url = 'https://' + url;
+                try {
+                    new URL(url);
+                    state.bookmarks.push({ title, url });
+                    saveData();
+                    render();
+                    showToast(t('added'));
+                    showExportReminder();
+                    closeModal();
+                } catch(e) { showToast(t('invalidUrl')); }
+            };
+            cancelBtn.onclick = closeModal;
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+        }
+        
+        function deleteBookmark(index) {
+            state.bookmarks.splice(index, 1);
+            saveData();
+            render();
+            showToast('Плитка удалена');
+        }
+        
         dom.tilesContainer.addEventListener('click', (e) => {
             const deleteBtn = e.target.closest('.delete-tile');
             const tile = e.target.closest('.tile');
             if (!tile) return;
-            
             if (deleteBtn) {
                 const index = parseInt(tile.dataset.index);
-                if (!isNaN(index)) {
-                    state.bookmarks.splice(index, 1);
-                    saveData();
-                    render();
-                    showToast('Плитка удалена');
-                }
-            } else {
-                const index = parseInt(tile.dataset.index);
-                if (!isNaN(index) && state.bookmarks[index]) {
-                    window.location.href = state.bookmarks[index].url;
-                }
+                if (!isNaN(index)) deleteBookmark(index);
             }
         });
         
-        function addBookmark() {
-            let title = dom.siteTitle.value.trim();
-            let url = dom.siteUrl.value.trim();
-            if (!title || !url) { showToast(t('fillFields')); return; }
-            if (!url.startsWith('http')) url = 'https://' + url;
-            try {
-                new URL(url);
-                state.bookmarks.push({ title, url });
-                saveData();
-                render();
-                dom.siteTitle.value = '';
-                dom.siteUrl.value = '';
-                showToast(t('added'));
-            } catch(e) { showToast(t('invalidUrl')); }
-        }
-        
-        function exportBookmarks() {
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([JSON.stringify(state.bookmarks, null, 2)], {type:'application/json'}));
-            a.download = `steam_bookmarks_${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(a.href);
-            showToast(t('exportDone'));
-        }
-        
-        function importBookmarks() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'application/json';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        const imported = JSON.parse(ev.target.result);
-                        if (Array.isArray(imported)) {
-                            state.bookmarks = imported;
-                            saveData();
-                            render();
-                            showToast(t('importSuccess'));
-                        }
-                    } catch(err) { showToast(t('importError')); }
-                    reader.onload = null;
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-        
-        function resetAll() { if (confirm(t('resetConfirm'))) { state.bookmarks = []; saveData(); render(); showToast(t('resetDone')); } }
-        
-        // ========== ПОИСК ==========
+        // ============================================================
+        // ========== 11. ПОИСК ==========
+        // ============================================================
         function setupSearch() {
             dom.searchForm.onsubmit = (e) => {
                 e.preventDefault();
@@ -1141,37 +1889,19 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             };
         }
         
-        // ========== ЯЗЫК ==========
+        // ============================================================
+        // ========== 12. ЯЗЫК ==========
+        // ============================================================
         function updateLanguage() {
             dom.searchInput.placeholder = t('searchPlaceholder');
             document.querySelector('.search-btn').textContent = t('searchBtn');
-            dom.siteTitle.placeholder = t('addSitePlaceholder');
-            dom.siteUrl.placeholder = t('addUrlPlaceholder');
-            dom.addBtn.textContent = t('addSiteBtn');
-            dom.showAddRadioBtn.textContent = t('addRadioBtn');
-            dom.radioName.placeholder = t('radioNamePlaceholder');
-            dom.radioUrl.placeholder = t('radioUrlPlaceholder');
-            dom.saveRadioBtn.textContent = t('saveRadio');
-            dom.cancelRadioBtn.textContent = t('cancelRadio');
-            dom.exportBtn.textContent = t('exportBtn');
-            dom.importBtn.textContent = t('importBtn');
-            dom.resetBtn.textContent = t('resetBtn');
             dom.langSwitch.textContent = state.currentLang === 'ru' ? 'EN' : 'RU';
-            
-            if (state.bookmarks.length === 0) {
-                if (dom.tilesContainer && dom.tilesContainer.innerHTML.includes('Нет закладок')) {
-                    dom.tilesContainer.innerHTML = `<div style="text-align:center; padding:50px;">${t('noBookmarks')}</div>`;
-                }
-            }
-            if (state.radioStations.length === 0) {
-                if (dom.radioList && dom.radioList.innerHTML.includes('Нет радиостанций')) {
-                    dom.radioList.innerHTML = `<div style="padding:20px; text-align:center; opacity:0.6;">${t('noRadio')}</div>`;
-                }
-            }
             if (state.currentRadio) {
-                dom.currentStationName.textContent = t('currentStation') + state.currentRadio.name;
+                dom.currentStationDisplay.textContent = state.currentRadio.name;
+                dom.statusText.textContent = state.isPlaying ? t('onAir') : t('paused');
             } else {
-                dom.currentStationName.textContent = t('selectRadio');
+                dom.currentStationDisplay.textContent = t('selectRadio');
+                dom.statusText.textContent = t('offline');
             }
         }
         
@@ -1183,14 +1913,13 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
         
         function loadLanguage() {
             const saved = localStorage.getItem('steam_language');
-            if (saved && (saved === 'ru' || saved === 'en')) state.currentLang = saved;
+            if (saved === 'ru' || saved === 'en') state.currentLang = saved;
             updateLanguage();
         }
         
-        // ========== ПЕРЕНОСИМАЯ КНОПКА РАДИО ==========
-        const PLAY_ICON = "https://img.icons8.com/?size=100&id=ZfzQA6FzEiPP&format=png&color=5C7CFA";
-        const PAUSE_ICON = "https://img.icons8.com/?size=100&id=EEH2MmtvmpiW&format=png&color=5C7CFA";
-        
+        // ============================================================
+        // ========== 13. ПЕРЕНОСИМАЯ КНОПКА ==========
+        // ============================================================
         function saveButtonPosition(left, top) {
             localStorage.setItem('radio_btn_left', left);
             localStorage.setItem('radio_btn_top', top);
@@ -1227,12 +1956,10 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             const dy = e.clientY - state.dragStartY;
             let newLeft = state.startLeft + dx;
             let newTop = state.startTop + dy;
-            
             const maxLeft = window.innerWidth - dom.floatBtn.offsetWidth;
             const maxTop = window.innerHeight - dom.floatBtn.offsetHeight;
             newLeft = Math.max(0, Math.min(maxLeft, newLeft));
             newTop = Math.max(0, Math.min(maxTop, newTop));
-            
             dom.floatBtn.style.left = newLeft + 'px';
             dom.floatBtn.style.top = newTop + 'px';
         }
@@ -1245,88 +1972,65 @@ Steam Overlay блокирует `file:///`, но **не блокирует** `f
             saveButtonPosition(dom.floatBtn.style.left, dom.floatBtn.style.top);
         }
         
-        function updateFloatButton() {
-            if (!dom.radioPlayer.paused && dom.radioPlayer.src && !dom.radioPlayer.ended) {
-                dom.floatIcon.src = PAUSE_ICON;
-                dom.floatIcon.classList.add('pulsing');
-                dom.floatBtn.title = 'Пауза | Перетащите мышкой';
-            } else {
-                dom.floatIcon.src = PLAY_ICON;
-                dom.floatIcon.classList.remove('pulsing');
-                dom.floatBtn.title = 'Включить радио | Перетащите мышкой';
-            }
-        }
-        
-        function toggleRadio(e) {
+        function toggleRadioFromFloat(e) {
             if (state.isDragging) return;
             e.stopPropagation();
-            
-            if (dom.radioPlayer.paused || !dom.radioPlayer.src || dom.radioPlayer.ended) {
-                if (state.currentRadio) {
-                    playRadio(state.currentRadio);
-                } else if (state.radioStations.length > 0) {
-                    playRadio(state.radioStations[0]);
-                } else {
-                    showToast(t('noRadio'));
-                    return;
-                }
-            } else {
-                dom.radioPlayer.pause();
+            togglePlayPause();
+        }
+        
+        // ============================================================
+        // ========== 14. ОЧИСТКА ПРИ ЗАКРЫТИИ ==========
+        // ============================================================
+        window.addEventListener('beforeunload', () => {
+            if (audioElement) {
+                audioElement.pause();
+                audioElement.src = '';
+                audioElement.load();
             }
-            updateFloatButton();
-        }
+            if (reminderTimeout) {
+                clearTimeout(reminderTimeout);
+                reminderTimeout = null;
+            }
+        });
         
-        function initRadioForm() {
-            dom.showAddRadioBtn.onclick = () => {
-                dom.radioAddForm.style.display = 'flex';
-                dom.radioName.value = '';
-                dom.radioUrl.value = '';
-            };
-            dom.cancelRadioBtn.onclick = () => { dom.radioAddForm.style.display = 'none'; };
-            dom.saveRadioBtn.onclick = () => {
-                if (addRadio(dom.radioName.value.trim(), dom.radioUrl.value.trim())) {
-                    dom.radioAddForm.style.display = 'none';
-                    showToast(t('radioAdded'));
-                }
-            };
-            dom.radioName.onkeypress = dom.radioUrl.onkeypress = (e) => { if (e.key === 'Enter') dom.saveRadioBtn.click(); };
-        }
-        
+        // ============================================================
+        // ========== 15. ВСПОМОГАТЕЛЬНЫЕ ==========
+        // ============================================================
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
         
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        // ============================================================
+        // ========== 16. ИНИЦИАЛИЗАЦИЯ ==========
+        // ============================================================
         function init() {
-            dom.addBtn.onclick = addBookmark;
-            dom.exportBtn.onclick = exportBookmarks;
-            dom.importBtn.onclick = importBookmarks;
-            dom.resetBtn.onclick = resetAll;
-            dom.siteUrl.onkeypress = (e) => { if (e.key === 'Enter') addBookmark(); };
-            dom.langSwitch.onclick = switchLanguage;
+            const savedReminders = localStorage.getItem('steam_reminders');
+            if (savedReminders !== null) state.remindersEnabled = savedReminders === 'true';
             
-            // Drag & Drop события
+            dom.langSwitch.onclick = switchLanguage;
+            dom.settingsIcon.onclick = showSettings;
+            dom.customPlayBtn.onclick = togglePlayPause;
+            dom.volumeControl.addEventListener('input', (e) => { audioElement.volume = e.target.value; });
+            document.querySelectorAll('.theme-dot').forEach(btn => { btn.onclick = () => setTheme(btn.dataset.theme); });
+            
             dom.floatBtn.addEventListener('mousedown', onMouseDown);
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mouseup', onMouseUp);
+            dom.floatBtn.addEventListener('click', toggleRadioFromFloat);
             
-            // Очистка перед закрытием
-            window.addEventListener('beforeunload', () => {
-                window.removeEventListener('mousemove', onMouseMove);
-                window.removeEventListener('mouseup', onMouseUp);
-            });
-            
-            dom.radioPlayer.addEventListener('play', updateFloatButton);
-            dom.radioPlayer.addEventListener('pause', updateFloatButton);
-            dom.radioPlayer.addEventListener('ended', updateFloatButton);
-            dom.floatBtn.addEventListener('click', toggleRadio);
+            audioElement.addEventListener('play', () => { state.isPlaying = true; updateRadioIconColor(); });
+            audioElement.addEventListener('pause', () => { state.isPlaying = false; updateRadioIconColor(); });
+            audioElement.addEventListener('ended', () => { state.isPlaying = false; updateRadioIconColor(); });
             
             loadLanguage();
+            loadTheme();
             loadData();
             loadRadio();
+            loadQuickLinks();
             setupSearch();
-            initRadioForm();
             loadButtonPosition();
-            dom.floatBtn.style.cursor = 'grab';
-            updateFloatButton();
+            updateRadioIconColor();
+            audioElement.volume = 0.5;
+            fetchWeather();
+            setInterval(fetchWeather, 600000);
         }
         
         init();
