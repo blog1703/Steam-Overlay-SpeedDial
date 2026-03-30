@@ -3,7 +3,7 @@
 # Steam-Overlay-SpeedDial
 Custom Start Page for Steam Overlay Browser | Features site tiles, radio with global controls, Google search, weather, Telegram, Discord, YouTube Music, Yandex Music, VK. Supports bookmark import/export and RU/EN languages.
 
-[Demo site Home Page Overlay](https://steamhomepage.netlify.app/demo.html)
+[Demo site Home Page Overlay](https://blog1703.github.io/Steam-Overlay-SpeedDial/demo.html)
 
 ## 🛠️ Installation
 
